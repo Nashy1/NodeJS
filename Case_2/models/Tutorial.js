@@ -6,7 +6,7 @@ const Tutorial = mongoose.model(
     title: String,
     author: String,
     images: [],
-    comment:[
+    comments:[
       {
         type: mongoose.Schema.Types.ObjectId,
         ref:"Comment"

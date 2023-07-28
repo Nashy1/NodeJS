@@ -40,9 +40,10 @@ const createImage = function(tutorialId, image) {
     });
   };
 
-  
+
   const getTutorialWithPopulate = function(id) {
-    return db.Tutorial.findById(id).populate("comments");
+    // return db.Tutorial.findById(id).populate("comments");
+    return db.Tutorial.findById(id).populate("comments", "-_id -__v");
   };
 
 
@@ -70,7 +71,11 @@ const createImage = function(tutorialId, image) {
       createdAt: Date.now()
     });
     console.log("\n>> Tutorial:\n", tutorial);
+
+    tutorial = await getTutorialWithPopulate(tutorial._id);
+    console.log("\n>> populated Tutorial:\n", tutorial);
   };
+  
 
 mongoose
     .connect('mongodb://127.0.0.1/bezkoder_db', {
