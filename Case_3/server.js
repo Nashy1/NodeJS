@@ -79,31 +79,23 @@ const createImage = function(tutorialId, image) {
       title: "Tutorial #1",
       author: "bezkoder"
     });
-
+  
     var category = await createCategory({
       name: "Node.js",
       description: "Node.js tutorial"
     });
   
+    await addTutorialToCategory(tutorial._id, category._id);
   
-    tutorial = await createComment(tutorial._id, {
-      username: "jack",
-      text: "This is a great tutorial.",
-      createdAt: Date.now()
+    var newTutorial = await createTutorial({
+      title: "Tutorial #2",
+      author: "bezkoder"
     });
-    console.log("\n>> Tutorial:\n", tutorial);
   
-    tutorial = await createComment(tutorial._id, {
-      username: "mary",
-      text: "Thank you, it helps me alot.",
-      createdAt: Date.now()
-    });
-    console.log("\n>> Tutorial:\n", tutorial);
-
-    tutorial = await getTutorialWithPopulate(tutorial._id);
-    console.log("\n>> populated Tutorial:\n", tutorial);
-    tutorial = await addTutorialToCategory(tutorial._id, category._id);
-    console.log("\n>> Tutorial:\n", tutorial);
+    await addTutorialToCategory(newTutorial._id, category._id);
+  
+    var tutorials = await getTutorialsInCategory(category._id);
+    console.log("\n>> all Tutorials in Cagetory:\n", tutorials);
   };
   
 
