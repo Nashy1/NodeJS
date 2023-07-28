@@ -8,20 +8,38 @@ const createTutorial = function(tutorial) {
     });
   };
   
-  const createImage = function(tutorialId, image) {
-    console.log("\n>> Add Image:\n", image);
-    return db.Tutorial.findByIdAndUpdate(
-      tutorialId,
-      {
-        $push: {
-          images: {
-            url: image.url,
-            caption: image.caption
+//   const createImage = function(tutorialId, image) {
+//     console.log("\n>> Add Image:\n", image);
+//     return db.Tutorial.findByIdAndUpdate(
+//       tutorialId,
+//       {
+//         $push: {
+//           images: {
+//             url: image.url,
+//             caption: image.caption
+//           }
+//         }
+//       },
+//       { new: true, useFindAndModify: false }
+//     );
+//   };
+const createImage = function(tutorialId, image) {
+    return db.Image.create(image).then(docImage => {
+      console.log("\n>> Created Image:\n", docImage);
+      return db.Tutorial.findByIdAndUpdate(
+        tutorialId,
+        {
+          $push: {
+            images: {
+              _id: docImage._id,
+              url: docImage.url,
+              caption: docImage.caption
+            }
           }
-        }
-      },
-      { new: true, useFindAndModify: false }
-    );
+        },
+        { new: true, useFindAndModify: false }
+      );
+    });
   };
   
   const run = async function() {
