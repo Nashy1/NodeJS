@@ -61,6 +61,12 @@ const createImage = function(tutorialId, image) {
     );
   };
 
+  const getTutorialsInCategory = function(categoryId) {
+    return db.Tutorial.find({ category: categoryId })
+      .populate("category", "name -_id")
+      .select("-comments -images -__v");
+  };
+
 
 
 
