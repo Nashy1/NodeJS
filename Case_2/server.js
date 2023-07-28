@@ -8,21 +8,7 @@ const createTutorial = function(tutorial) {
     });
   };
   
-//   const createImage = function(tutorialId, image) {
-//     console.log("\n>> Add Image:\n", image);
-//     return db.Tutorial.findByIdAndUpdate(
-//       tutorialId,
-//       {
-//         $push: {
-//           images: {
-//             url: image.url,
-//             caption: image.caption
-//           }
-//         }
-//       },
-//       { new: true, useFindAndModify: false }
-//     );
-//   };
+
 const createImage = function(tutorialId, image) {
     return db.Image.create(image).then(docImage => {
       console.log("\n>> Created Image:\n", docImage);
@@ -37,6 +23,18 @@ const createImage = function(tutorialId, image) {
             }
           }
         },
+        { new: true, useFindAndModify: false }
+      );
+    });
+  };
+
+  const createComment = function(tutorialId, comment) {
+    return db.Comment.create(comment).then(docComment => {
+      console.log("\n>> Created Comment:\n", docComment);
+  
+      return db.Tutorial.findByIdAndUpdate(
+        tutorialId,
+        { $push: { comments: docComment._id } },
         { new: true, useFindAndModify: false }
       );
     });
