@@ -46,6 +46,22 @@ const createImage = function(tutorialId, image) {
     return db.Tutorial.findById(id).populate("comments", "-_id -__v");
   };
 
+  const createCategory = function(category) {
+    return db.Category.create(category).then(docCategory => {
+      console.log("\n>> Created Category:\n", docCategory);
+      return docCategory;
+    });
+  };
+  
+  const addTutorialToCategory = function(tutorialId, categoryId) {
+    return db.Tutorial.findByIdAndUpdate(
+      tutorialId,
+      { category: categoryId },
+      { new: true, useFindAndModify: false }
+    );
+  };
+
+
 
 
 
@@ -57,6 +73,12 @@ const createImage = function(tutorialId, image) {
       title: "Tutorial #1",
       author: "bezkoder"
     });
+
+    var category = await createCategory({
+      name: "Node.js",
+      description: "Node.js tutorial"
+    });
+  
   
     tutorial = await createComment(tutorial._id, {
       username: "jack",
@@ -74,6 +96,8 @@ const createImage = function(tutorialId, image) {
 
     tutorial = await getTutorialWithPopulate(tutorial._id);
     console.log("\n>> populated Tutorial:\n", tutorial);
+    tutorial = await addTutorialToCategory(tutorial._id, category._id);
+    console.log("\n>> Tutorial:\n", tutorial);
   };
   
 
